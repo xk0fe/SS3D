@@ -1,3 +1,5 @@
+using Coimbra.Services.Events;
+using Coimbra.Services.PlayerLoopEvents;
 using System.Collections.Generic;
 using System.Linq;
 using FishNet.Connection;
@@ -58,6 +60,20 @@ namespace SS3D.Systems.Inventory.Containers
 
         public InventoryView InventoryView { get; private set; }
 
+        protected override void OnEnabled()
+        {
+            base.OnEnabled();
+
+            AddHandle(UpdateEvent.AddListener(HandleUpdate));
+        }
+
+        protected override void OnAwake()
+        {
+            base.OnAwake();
+
+            Hands.Inventory = this;
+        }
+
         public override void OnStartClient()
         {
             base.OnStartClient();
@@ -76,18 +92,10 @@ namespace SS3D.Systems.Inventory.Containers
             SystemLocator.Get<RoleSystem>().GiveRoleLoadoutToPlayer(Body);
         }
 
-        protected override void OnAwake()
+        private void HandleUpdate(ref EventContext context, in UpdateEvent updateEvent)
         {
-            base.OnAwake();
-
-            Hands.Inventory = this;
-        }
-
-        protected override void HandleUpdate(in float deltaTime)
-        {
-            base.HandleUpdate(in deltaTime);
-
             float time = Time.time;
+            
             if (!(time > _nextAccessCheck))
             {
                 return;

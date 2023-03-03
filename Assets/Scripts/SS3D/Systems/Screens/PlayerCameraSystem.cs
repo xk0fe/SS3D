@@ -43,7 +43,7 @@ namespace SS3D.Systems.Screens
             Punpun.Say(this, $"setting new camera target {target.name}");
             _cameraFollow.SetTarget(target);
 
-            new CameraTargetChanged(GameObjectCache).Invoke(this);
+            new CameraTargetChanged(GameObject).Invoke(this);
         }
     }
 }

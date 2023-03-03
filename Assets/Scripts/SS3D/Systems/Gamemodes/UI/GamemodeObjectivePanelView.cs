@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using Coimbra;
 using Coimbra.Services.Events;
+using Coimbra.Services.PlayerLoopEvents;
+using SS3D.Systems.Gamemodes;
+using SS3D.Systems.GameModes.Events;
 using SS3D.Core;
 using SS3D.Systems.Rounds;
 using SS3D.Systems.Rounds.Events;
@@ -21,14 +24,22 @@ namespace SS3D.Systems.Gamemodes.UI
         private Controls.OtherActions _controls;
 
         private Dictionary<int, GamemodeObjectiveItemView> _gamemodeObjectiveItems;
-        
-        protected override void OnAwake()
+
+        protected override void OnEnabled()
         {
-            base.OnAwake();
+            base.OnEnabled();
 
             _gamemodeObjectiveItems = new Dictionary<int, GamemodeObjectiveItemView>();
 
-            RoundStateUpdated.AddListener(HandleRoundStateUpdated);
+            AddHandle(RoundStateUpdated.AddListener(HandleRoundStateUpdated));
+            AddHandle(UpdateEvent.AddListener(HandleUpdate));
+        }
+
+        protected override void OnStart()
+        {
+            base.OnStart();
+
+            _fade.SetFade(false);
         }
 
         protected override void OnStart()
@@ -66,6 +77,23 @@ namespace SS3D.Systems.Gamemodes.UI
             if (roundState == RoundState.Stopped)
             {
                 ClearObjectivesList();
+            }
+        }
+
+        private void HandleUpdate(ref EventContext context, in UpdateEvent updateEvent)
+        {
+            ProcessInput();
+        }
+
+        private void ProcessInput()
+        {
+            if (Input.GetKeyDown(KeyCode.Tab))
+            {
+                _fade.SetFade(true);
+            }
+            if (Input.GetKeyUp(KeyCode.Tab))
+            {
+                _fade.SetFade(false);
             }
         }
 

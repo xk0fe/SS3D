@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using SS3D.Logging;
 using UnityEngine;
+using System = SS3D.Core.Behaviours.System;
 
 namespace SS3D.Core
 {
@@ -46,6 +47,15 @@ namespace SS3D.Core
             Punpun.Panic(typeof(SystemLocator), message, Logs.Important);
 
             return null;
+        }
+
+        /// <summary>
+        /// Unregister the system from the dictionary. 
+        /// </summary>
+        /// <param name="system"></param>
+        public static void Unregister(object system)
+        {
+            Systems.Remove(system.GetType());
         }
     }
 }
