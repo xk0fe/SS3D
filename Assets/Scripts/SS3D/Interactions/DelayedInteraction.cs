@@ -39,7 +39,7 @@ namespace SS3D.Interactions
 
             return new ClientDelayedInteraction
             {
-                Delay = Delay, LoadingBarPrefab = LoadingBarPrefab
+                Delay = Delay, LoadingBarPrefab = LoadingBarPrefab,
             };
         }
 
@@ -85,12 +85,10 @@ namespace SS3D.Interactions
                     StartDelayed(interactionEvent);
                     return false;
                 }
-                else
-                {
-                    // Cancel own interaction
-                    interactionEvent.Source.CancelInteraction(reference);
-                    return true;
-                }
+
+                // Cancel own interaction
+                interactionEvent.Source.CancelInteraction(reference);
+                return true;
             }
 
             return true;

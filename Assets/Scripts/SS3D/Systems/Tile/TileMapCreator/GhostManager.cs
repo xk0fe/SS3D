@@ -21,7 +21,7 @@ namespace SS3D.Systems.Tile.TileMapCreator
             Valid,
             Invalid,
             Building,
-            Deleting
+            Deleting,
         }
 
         public Direction Dir { get; private set; } = Direction.North;

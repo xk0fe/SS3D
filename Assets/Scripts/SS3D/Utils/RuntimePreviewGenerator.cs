@@ -89,14 +89,13 @@ namespace SS3D.Utils
 		}
 
 		private const int PREVIEW_LAYER = 22;
-		private static Vector3 PREVIEW_POSITION = new Vector3(-1, 1, -1);
+		private static Vector3 PREVIEW_POSITION = new(-1, 1, -1);
 
 		private static Camera renderCamera;
-		[SerializeField]
-		private static CameraSetup cameraSetup = new CameraSetup();
+		private static CameraSetup cameraSetup = new();
 
-		private static List<Renderer> renderersList = new List<Renderer>(64);
-		private static List<int> layersList = new List<int>(64);
+		private static List<Renderer> renderersList = new(64);
+		private static List<int> layersList = new(64);
 
 		private static float aspect;
 		private static float minX, maxX, minY, maxY;
@@ -173,9 +172,9 @@ namespace SS3D.Utils
 		static RuntimePreviewGenerator()
 		{
 			PreviewRenderCamera = null;
-			PreviewDirection = new Vector3(-1f, -1f, -1f);
+			PreviewDirection = new(-1f, -1f, -1f);
 			Padding = 0f;
-			BackgroundColor = new Color(0.3f, 0.3f, 0.3f, 1f);
+			BackgroundColor = new(0.3f, 0.3f, 0.3f, 1f);
 			OrthographicMode = false;
 			MarkTextureNonReadable = true;
 
@@ -248,7 +247,7 @@ namespace SS3D.Utils
 			Transform previewObject;
 			if (shouldCloneModel)
 			{
-				previewObject = (Transform)Object.Instantiate(model, null, false);
+				previewObject = Object.Instantiate(model, null, false);
 				previewObject.gameObject.hideFlags = HideFlags.HideAndDontSave;
 			}
 			else
@@ -283,7 +282,7 @@ namespace SS3D.Utils
 				renderersList.Clear();
 				previewObject.GetComponentsInChildren(renderersList);
 
-				Bounds previewBounds = new Bounds();
+				Bounds previewBounds = new();
 				bool init = false;
 				for (int i = 0; i < renderersList.Count; i++)
 				{
@@ -350,8 +349,8 @@ namespace SS3D.Utils
 				}
 				else
 				{
-					projectionPlaneHorizontal = new ProjectionPlane(renderCamera.transform.up, boundsCenter);
-					projectionPlaneVertical = new ProjectionPlane(renderCamera.transform.right, boundsCenter);
+					projectionPlaneHorizontal = new(renderCamera.transform.up, boundsCenter);
+					projectionPlaneVertical = new(renderCamera.transform.right, boundsCenter);
 
 					maxDistance = Mathf.NegativeInfinity;
 
@@ -396,8 +395,8 @@ namespace SS3D.Utils
 				int textureLimitBackup = QualitySettings.masterTextureLimit; //workaround for mipmap generation;
 				QualitySettings.masterTextureLimit = 0;
 	
-				result = new Texture2D(width, height, m_backgroundColor.a < 1f ? TextureFormat.RGBA32 : TextureFormat.RGB24, true);
-				result.ReadPixels(new Rect(0, 0, width, height), 0, 0, true);
+				result = new(width, height, m_backgroundColor.a < 1f ? TextureFormat.RGBA32 : TextureFormat.RGB24, true);
+				result.ReadPixels(new(0, 0, width, height), 0, 0, true);
 				result.filterMode = FilterMode.Trilinear;
 
                 result.Apply(false, m_markTextureNonReadable);

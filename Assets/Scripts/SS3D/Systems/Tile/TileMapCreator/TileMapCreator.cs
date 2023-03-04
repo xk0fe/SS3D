@@ -27,7 +27,7 @@ namespace SS3D.Systems.Tile.UI
         public TMP_Dropdown _layerPlacementDropdown;
 
         private bool _enabled = false;
-        private bool _initalized = false;
+        private bool _initialized = false;
         private bool _isDeleting = false;
         private bool _itemPlacement = false;
         private bool _mouseOverUI = false;
@@ -40,6 +40,7 @@ namespace SS3D.Systems.Tile.UI
         private Plane _plane;
 
         private List<GenericObjectSo> _objectDatabase;
+        private Camera _camera;
 
         public bool IsDeleting
         {
@@ -57,21 +58,22 @@ namespace SS3D.Systems.Tile.UI
         [ServerOrClient]
         private void Start()
         {
+            _camera = Camera.main;
             ShowUI(false);
         }
 
         [ServerOrClient]
         private void Initialize()
         {
-            if (!_initalized)
+            if (!_initialized)
             {
                 _tileSubsystem = Subsystems.Get<TileSubsystem>();
                 _ghostManager = GetComponent<GhostManager>();
-                _plane = new Plane(Vector3.up, 0);
+                _plane = new(Vector3.up, 0);
 
-                LoadObjectGrid(new[] { TileLayer.Plenum }, false);
+                LoadObjectGrid(new[] { TileLayer.Plenum, }, false);
 
-                _initalized = true;
+                _initialized = true;
             }
         }
 
@@ -86,7 +88,7 @@ namespace SS3D.Systems.Tile.UI
                 Initialize();
             }
 
-            if (!_initalized)
+            if (!_initialized)
                 return;
 
             // Clean-up if we are not building
@@ -160,7 +162,7 @@ namespace SS3D.Systems.Tile.UI
         [ServerOrClient]
         private void FindAndDeleteItem(Vector3 worldPosition)
         {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            Ray ray = _camera.ScreenPointToRay(Input.mousePosition);
 
             if (Physics.Raycast(ray, out RaycastHit hitInfo))
             {
@@ -176,7 +178,7 @@ namespace SS3D.Systems.Tile.UI
         [ServerOrClient]
         private Vector3 GetMousePosition()
         {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            Ray ray = _camera.ScreenPointToRay(Input.mousePosition);
 
             if (_plane.Raycast(ray, out float distance))
             {
@@ -334,22 +336,22 @@ namespace SS3D.Systems.Tile.UI
             switch (index)
             {
                 case 0:
-                    LoadObjectGrid(new[] {TileLayer.Plenum}, false);
+                    LoadObjectGrid(new[] {TileLayer.Plenum, }, false);
                     break;
                 case 1:
-                    LoadObjectGrid(new[] { TileLayer.Turf }, false);
+                    LoadObjectGrid(new[] { TileLayer.Turf, }, false);
                     break;
                 case 2:
-                    LoadObjectGrid(new[] { TileLayer.FurnitureBase, TileLayer.FurnitureTop }, false);
+                    LoadObjectGrid(new[] { TileLayer.FurnitureBase, TileLayer.FurnitureTop, }, false);
                     break;
                 case 3:
-                    LoadObjectGrid(new[] { TileLayer.WallMountHigh, TileLayer.WallMountLow }, false);
+                    LoadObjectGrid(new[] { TileLayer.WallMountHigh, TileLayer.WallMountLow, }, false);
                     break;
                 case 4:
-                    LoadObjectGrid(new[] { TileLayer.Wire, TileLayer.Disposal, TileLayer.Pipes }, false);
+                    LoadObjectGrid(new[] { TileLayer.Wire, TileLayer.Disposal, TileLayer.Pipes, }, false);
                     break;
                 case 5:
-                    LoadObjectGrid(new[] { TileLayer.Overlays }, false);
+                    LoadObjectGrid(new[] { TileLayer.Overlays, }, false);
                     break;
                 case 6:
                     LoadObjectGrid(null, true);
