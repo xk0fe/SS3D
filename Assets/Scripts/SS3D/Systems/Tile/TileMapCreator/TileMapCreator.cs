@@ -19,7 +19,7 @@ namespace SS3D.Systems.Tile.UI
     /// <summary>
     /// In-game editor for placing and deleting items/objects in a tilemap.
     /// </summary>
-    public class TileMapCreator : NetworkSystem, IPointerEnterHandler, IPointerExitHandler
+    public class TileMapCreator : NetworkSubsystem, IPointerEnterHandler, IPointerExitHandler
     {
         public GameObject _menuRoot;
         public GameObject _contentRoot;
@@ -35,7 +35,7 @@ namespace SS3D.Systems.Tile.UI
         private Vector3 _lastSnappedPosition;
         private GenericObjectSo _selectedObject;
 
-        private TileSystem _tileSystem;
+        private TileSubsystem _tileSubsystem;
         private GhostManager _ghostManager;
         private Plane _plane;
 
@@ -65,7 +65,7 @@ namespace SS3D.Systems.Tile.UI
         {
             if (!_initalized)
             {
-                _tileSystem = SystemLocator.Get<TileSystem>();
+                _tileSubsystem = Subsystems.Get<TileSubsystem>();
                 _ghostManager = GetComponent<GhostManager>();
                 _plane = new Plane(Vector3.up, 0);
 
@@ -148,11 +148,11 @@ namespace SS3D.Systems.Tile.UI
                 if (_itemPlacement)
                     FindAndDeleteItem(snappedPosition);
                 else
-                    _tileSystem.RpcClearTileObject(_selectedObject.nameString, snappedPosition);
+                    _tileSubsystem.RpcClearTileObject(_selectedObject.nameString, snappedPosition);
             }
             else
             {
-                _tileSystem.RpcPlaceObject(_selectedObject.nameString, snappedPosition, _ghostManager.Dir, replaceExisting);
+                _tileSubsystem.RpcPlaceObject(_selectedObject.nameString, snappedPosition, _ghostManager.Dir, replaceExisting);
                 RefreshGhost();
             }
         }
@@ -168,7 +168,7 @@ namespace SS3D.Systems.Tile.UI
 
                 if (placedItem != null)
                 {
-                    _tileSystem.RpcClearItemObject(placedItem.NameString, worldPosition);
+                    _tileSubsystem.RpcClearItemObject(placedItem.NameString, worldPosition);
                 }
             }
         }
@@ -197,19 +197,19 @@ namespace SS3D.Systems.Tile.UI
         // Ownership not required since a client can request whether it is possible to build
         public void RpcSendCanBuild(string tileObjectSoName, Vector3 placePosition, Direction dir, bool replaceExisting, NetworkConnection conn)
         {
-            if (_tileSystem == null)
+            if (_tileSubsystem == null)
             {
-                _tileSystem = SystemLocator.Get<TileSystem>();
+                _tileSubsystem = Subsystems.Get<TileSubsystem>();
             }
 
-            TileObjectSo tileObjectSo = (TileObjectSo) _tileSystem.GetAsset(tileObjectSoName);
+            TileObjectSo tileObjectSo = (TileObjectSo) _tileSubsystem.GetAsset(tileObjectSoName);
 
             if (tileObjectSo == null)
             {
                 return;
             }
 
-            bool canBuild = _tileSystem.CanBuild(tileObjectSo, placePosition, dir, replaceExisting);
+            bool canBuild = _tileSubsystem.CanBuild(tileObjectSo, placePosition, dir, replaceExisting);
             RpcReceiveCanBuild(conn, canBuild);
         }
 
@@ -239,7 +239,7 @@ namespace SS3D.Systems.Tile.UI
         {
             ClearGrid();
 
-            _objectDatabase = _tileSystem.Loader.GetAllAssets();
+            _objectDatabase = _tileSubsystem.Loader.GetAllAssets();
 
             foreach (var asset in _objectDatabase)
             {
@@ -308,7 +308,7 @@ namespace SS3D.Systems.Tile.UI
         public void LoadMap()
         {
             if (IsServer)
-                _tileSystem.Load();
+                _tileSubsystem.Load();
             else
                 Punpun.Say(this, "Cannot load the map on a client");
         }
@@ -317,7 +317,7 @@ namespace SS3D.Systems.Tile.UI
         public void SaveMap()
         {
             if (IsServer)
-                _tileSystem.Save();
+                _tileSubsystem.Save();
             else
                 Punpun.Say(this, "Cannot save the map on a client");
         }
