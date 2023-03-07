@@ -96,7 +96,7 @@ namespace SS3D.Systems.Inventory.UI
             Assert.IsNotNull(containerUi);
             containerUi.AttachedContainer = container;
             containerUi.Inventory = Inventory;
-            _containerDisplays.Add(new ContainerDisplay(ui, container));
+            _containerDisplays.Add(new(ui, container));
         }
     }
 }

@@ -10,7 +10,7 @@ using UnityEngine.UIElements;
 namespace SS3D.Data.AssetDatabases.InspectorEditor
 {
     [CustomEditor(typeof(AssetDatabaseSettings))]
-    public class AssetDatabaseSettingsInspectorEditor : Editor
+    public sealed class AssetDatabaseSettingsInspectorEditor : Editor
     {
         private AssetDatabaseSettings _assetDatabaseSettings;
 
@@ -107,7 +107,7 @@ namespace SS3D.Data.AssetDatabases.InspectorEditor
             {
                 ObjectField objectField = new()
                 {
-                    value = database
+                    value = database,
                 };
 
                 _databaseListView.Add(objectField);

@@ -16,11 +16,13 @@ namespace SS3D.Systems.IngameConsoleSystem.Commands
         public override string Perform(string[] args)
         {
             CheckArgsResponse checkArgsResponse = CheckArgs(args);
+
             if (checkArgsResponse.IsValid == false)
                 return checkArgsResponse.InvalidArgs;
 
             string ret = "";
-            List<Soul> souls = SystemLocator.Get<PlayerSystem>().OnlineSouls.ToList();
+            List<Soul> souls = Subsystems.Get<PlayerSubsystem>().OnlineSouls.ToList();
+
             foreach (Soul i in souls)
             {
                 ret += i.Ckey + "\t";
@@ -31,15 +33,18 @@ namespace SS3D.Systems.IngameConsoleSystem.Commands
 
         protected override CheckArgsResponse CheckArgs(string[] args)
         {
-            CheckArgsResponse response = new CheckArgsResponse();
+            CheckArgsResponse response = new();
+
             if (args.Length != 0)
             {
                 response.IsValid = false;
                 response.InvalidArgs = "Invalid number of arguments";
+
                 return response;
             }
 
             response.IsValid = true;
+
             return response;
         }
     }

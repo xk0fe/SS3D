@@ -11,7 +11,7 @@ namespace SS3D.CodeGeneration
 
         public Indentator()
         {
-            _builder = new StringBuilder();
+            _builder = new();
         }
 
         public void Add()

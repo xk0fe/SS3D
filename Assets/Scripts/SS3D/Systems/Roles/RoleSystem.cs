@@ -17,11 +17,11 @@ using SS3D.Systems.Inventory.Items.Generic;
 
 namespace SS3D.Systems.Roles
 {
-    public class RoleSystem : NetworkSystem
+    public class RoleSystem : NetworkSubsystem
     {
         [SerializeField] private RolesAvailable _rolesAvailable;
-        private List<RoleCounter> _roleCounters = new List<RoleCounter>();
-        private Dictionary<Soul, RoleData> _rolePlayers = new Dictionary<Soul, RoleData>();
+        private List<RoleCounter> _roleCounters = new();
+        private Dictionary<Soul, RoleData> _rolePlayers = new();
 
         #region Setup
         protected override void OnStart()
@@ -51,8 +51,8 @@ namespace SS3D.Systems.Roles
             }
 
             foreach (RolesData role in _rolesAvailable.Roles)
-            {
-                RoleCounter roleCounter = new RoleCounter();
+            {                                
+                RoleCounter roleCounter = new();
                 roleCounter.Role = role.Data;
                 roleCounter.AvailableRoles = role.AvailableRoles;
 
@@ -123,13 +123,10 @@ namespace SS3D.Systems.Roles
             KeyValuePair<Soul, RoleData>? rolePlayer =
                 _rolePlayers.FirstOrDefault(rp => rp.Key == soul);
 
-            if (rolePlayer != null)
-            {
-                RoleData roleData = rolePlayer.Value.Value;
-                RoleCounter roleCounter = _roleCounters.First(rc => rc.Role == roleData);
+            RoleData roleData = rolePlayer.Value.Value;
+            RoleCounter roleCounter = _roleCounters.First(rc => rc.Role == roleData);
 
-                roleCounter.RemovePlayer(soul);
-            }
+            roleCounter.RemovePlayer(soul);
         }
 
         /// <summary>
@@ -142,17 +139,14 @@ namespace SS3D.Systems.Roles
             KeyValuePair<Soul, RoleData>? rolePlayer =
                 _rolePlayers.FirstOrDefault(rp => rp.Key == entity.Mind.Soul);
 
-            if (rolePlayer != null)
+            RoleData roleData = rolePlayer.Value.Value;
+
+            Punpun.Say(this, entity.Ckey + " embarked with role " + roleData.Name);
+            SpawnIdentificationItems(entity, roleData);
+
+            if (roleData.Loadout != null)
             {
-                RoleData roleData = rolePlayer.Value.Value;
-
-                Punpun.Say(this, entity.Ckey + " embarked with role " + roleData.Name);
-                SpawnIdentificationItems(entity, roleData);
-
-                if (roleData.Loadout != null)
-                {
-                    SpawnLoadoutItems(entity, roleData.Loadout);
-                }
+                SpawnLoadoutItems(entity, roleData.Loadout);
             }
         }
 
@@ -163,7 +157,7 @@ namespace SS3D.Systems.Roles
         /// <param name="role"></param>
         private void SpawnIdentificationItems(Entity entity, RoleData role)
         {
-            ItemSystem itemSystem = SystemLocator.Get<ItemSystem>();
+            ItemSubsystem itemSystem = Subsystems.Get<ItemSubsystem>();
             Inventory.Containers.Inventory inventory = entity.GetComponent<Inventory.Containers.Inventory>();
 
             Item pdaItem = itemSystem.SpawnItemInContainer(role.PDAPrefab, inventory.IDContainer);
@@ -214,7 +208,7 @@ namespace SS3D.Systems.Roles
                 return;
             }
 
-            ItemSystem itemSystem = SystemLocator.Get<ItemSystem>();
+            ItemSubsystem itemSystem = Subsystems.Get<ItemSubsystem>();
             itemSystem.SpawnItemInContainer(itemId, container);
         }
     }

@@ -17,7 +17,7 @@ namespace SS3D.Logging
             { Logs.ServerOnly, "#A645A6"},
             { Logs.External, "#E6DC33"},
             { Logs.ClientOnly, "#B94949"},
-            { Logs.Physics, "#678DB8"}
+            { Logs.Physics, "#678DB8"},
         };
 
         public static string GetLogColor(Logs logs)

@@ -7,6 +7,6 @@
     {
         None,
         Help,
-        Harm
+        Harm,
     }
 }

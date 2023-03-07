@@ -18,12 +18,12 @@ namespace SS3D.Systems.IngameConsoleSystem.Commands
             string ckey = args[0];
             string role = args[1];
             ServerRoleTypes foundRole = FindRole(role);
-            SystemLocator.Get<PermissionSystem>().ChangeUserPermission(ckey, foundRole);
+            Subsystems.Get<PermissionSubsystem>().ChangeUserPermission(ckey, foundRole);
             return "Done";
         }
         protected override CheckArgsResponse CheckArgs(string[] args)
         {
-            CheckArgsResponse response = new CheckArgsResponse();
+            CheckArgsResponse response = new();
             if (args.Length != 2)
             {
                 response.IsValid = false;
@@ -32,7 +32,7 @@ namespace SS3D.Systems.IngameConsoleSystem.Commands
             }
 
             string ckey = args[0];
-            bool isFound = SystemLocator.Get<PermissionSystem>().TryGetUserRole(ckey, out _);
+            bool isFound = Subsystems.Get<PermissionSubsystem>().TryGetUserRole(ckey, out _);
             if (!isFound)
             {
                 response.IsValid = false;

@@ -49,7 +49,7 @@ namespace SS3D.Systems.Inventory.UI
             float width = rectTransform.offsetMin.x + Math.Abs(rectTransform.offsetMax.x) + gridDimensions.x + 1;
             float height = rectTransform.offsetMin.y + Math.Abs(rectTransform.offsetMax.y) + gridDimensions.y;
             RectTransform rect = transform.GetChild(0).GetComponent<RectTransform>();
-            rect.sizeDelta = new Vector2(width, height);
+            rect.sizeDelta = new(width, height);
 
             // Set the text inside the containerUI to be the name of the container
             ContainerName.text = _attachedContainer.GetName();

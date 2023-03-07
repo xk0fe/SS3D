@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using JetBrains.Annotations;
+using System.Collections.Generic;
 using SS3D.Core;
 using SS3D.Systems.Entities;
 using SS3D.Systems.Permissions;
@@ -18,16 +19,16 @@ namespace SS3D.Systems.IngameConsoleSystem.Commands
                 return checkArgsResponse.InvalidArgs;
             
             string ret = "";
-            IEnumerable<Soul> souls = SystemLocator.Get<PlayerSystem>().ServerSouls;
+            IEnumerable<Soul> souls = Subsystems.Get<PlayerSubsystem>().ServerSouls;
             foreach (Soul i in souls)
             {
                 ret += i.Ckey + "\t";
             }
             return ret;
         }
-        protected override CheckArgsResponse CheckArgs(string[] args)
+        protected override CheckArgsResponse CheckArgs([NotNull] string[] args)
         {
-            CheckArgsResponse response = new CheckArgsResponse();
+            CheckArgsResponse response = new();
             if (args.Length != 0)
             {
                 response.IsValid = false;

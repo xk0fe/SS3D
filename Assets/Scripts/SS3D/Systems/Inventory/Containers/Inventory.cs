@@ -83,13 +83,13 @@ namespace SS3D.Systems.Inventory.Containers
                 return;
             }
 
-            InventoryView = ViewLocator.Get<InventoryView>().First();
+            InventoryView = ViewLocator.Get<InventoryView>()!.First();
             InventoryView.Inventory = this;
 
             InventoryView.Setup();
             InventoryView.Enable(true);
             
-            SystemLocator.Get<RoleSystem>().GiveRoleLoadoutToPlayer(Body);
+            Subsystems.Get<RoleSystem>().GiveRoleLoadoutToPlayer(Body);
         }
 
         private void HandleUpdate(ref EventContext context, in UpdateEvent updateEvent)

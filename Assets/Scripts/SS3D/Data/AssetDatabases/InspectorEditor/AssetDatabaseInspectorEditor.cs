@@ -38,7 +38,7 @@ namespace SS3D.Data.AssetDatabases.InspectorEditor
                 return null;
             }
 
-            VisualElement root = new VisualElement();
+            VisualElement root = new();
             _assetDatabaseVisualTree.CloneTree(root);
 
             _assetDatabaseLabel = root.Q<Label>("asset-database-label");
@@ -57,7 +57,7 @@ namespace SS3D.Data.AssetDatabases.InspectorEditor
                 {
                     ObjectField objectField = new()
                     {
-                        value = asset
+                        value = asset,
                     };
 
                     _assetsListView.Add(objectField);
@@ -83,7 +83,7 @@ namespace SS3D.Data.AssetDatabases.InspectorEditor
             {
                 ObjectField objectField = new()
                 {
-                    value = asset
+                    value = asset,
                 };
 
                 _assetsListView.Add(objectField);

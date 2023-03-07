@@ -44,7 +44,7 @@ namespace SS3D.Interactions
 
         public override int GetHashCode()
         {
-            return (Reference != null ? Reference.GetHashCode() : 0);
+            return Reference != null ? Reference.GetHashCode() : 0;
         }
     }
 }

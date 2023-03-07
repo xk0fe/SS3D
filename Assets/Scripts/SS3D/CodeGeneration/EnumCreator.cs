@@ -23,7 +23,7 @@ namespace SS3D.CodeGeneration
             string fullPath = dataPath + path;
 
             CodeWriter.WriteEnum(fullPath, enumName, enums, namespaceName);
-            EditorWindow.focusedWindow.ShowNotification(new GUIContent($"All assets loaded and {namespaceName}.{enumName} enum created at {path}."));
+            EditorWindow.focusedWindow.ShowNotification(new($"All assets loaded and {namespaceName}.{enumName} enum created at {path}."));
         }
 #endif
     }
