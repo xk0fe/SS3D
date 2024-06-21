@@ -132,6 +132,7 @@ namespace SS3D.Systems.Audio
             AudioSource validSource = null;
 
             AudioSourcesList audioSources = _audioSourcesLists.Find(x => x.AudioType == audioType);
+            audioSources.List.RemoveAll(source => source == null);
 
             //If there are no audio sources in our list, fix that.
             if (audioSources.List.Count == 0)
@@ -152,7 +153,7 @@ namespace SS3D.Systems.Audio
             }
 
             //If we have gone through the list and there's no available ones...
-            if (validSource == null)
+            if (!validSource)
             {
                 audioSources.CreateNewAudioSource();
 
@@ -170,7 +171,8 @@ namespace SS3D.Systems.Audio
         {
             _audioSourcesLists = new List<AudioSourcesList>
             {
-                new AudioSourcesList(MaxSfxAudioSources, MinSfxAudioSources, AudioType.Sfx, SfxAudioSourcePrefab, GameObject), new AudioSourcesList(MaxMusicAudioSources, MinMusicAudioSources, AudioType.Music, MusicAudioSourcePrefab, GameObject)
+                new(MaxSfxAudioSources, MinSfxAudioSources, AudioType.Sfx, SfxAudioSourcePrefab, GameObject), 
+                new(MaxMusicAudioSources, MinMusicAudioSources, AudioType.Music, MusicAudioSourcePrefab, GameObject)
             };
         }
 
