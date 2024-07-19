@@ -6,7 +6,10 @@ using SS3D.Interactions.Interfaces;
 using SS3D.Logging;
 using SS3D.Systems.Audio;
 using SS3D.Systems.Inventory.Items;
+using System;
+using System.Electricity;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace SS3D.Systems.Furniture
 {
@@ -17,6 +20,9 @@ namespace SS3D.Systems.Furniture
     /// </summary>
     public class VendingMachine : InteractionSource, IInteractionTarget
     {
+        [SerializeField]
+        private MachinePowerConsumer _powerConsumer;
+        
         /// <summary>
         /// The products available to dispense and their stock.
         /// </summary>
@@ -45,6 +51,11 @@ namespace SS3D.Systems.Furniture
         [Server]
         public void DispenseProduct(int productIndex)
         {
+            if (_powerConsumer.PowerStatus == PowerStatus.Inactive)
+            {
+                return;
+            }
+            
             if (productIndex >= _productsToDispense.Length)
             {
                 Log.Error(this, $"Product with index {productIndex} not found in products to dispense in {gameObject.name}. "
@@ -66,6 +77,7 @@ namespace SS3D.Systems.Furniture
                 return;
             }
 
+            _powerConsumer.UseMachineOnce();
             productToDispenseStock.Stock--;
             Subsystems.Get<AudioSystem>().PlayAudioSource(Audio.AudioType.Sfx, Sounds.Can1, Position, NetworkObject,
                 false, 0.7f, 1, 1, 3);
@@ -79,6 +91,11 @@ namespace SS3D.Systems.Furniture
         /// <inheritdoc />
         public IInteraction[] CreateTargetInteractions(InteractionEvent interactionEvent)
         {
+            if (_powerConsumer.PowerStatus == PowerStatus.Inactive)
+            {
+                return Array.Empty<IInteraction>();
+            }
+            
             IInteraction[] interactions = new IInteraction[_productsToDispense.Length];
             for (int i = 0; i < _productsToDispense.Length; i++)
             {
