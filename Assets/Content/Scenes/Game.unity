@@ -2617,6 +2617,30 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1962741443027797558, guid: 14b8b7b37cbe54a44a994f9d927bf213, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1962741443579838927, guid: 14b8b7b37cbe54a44a994f9d927bf213, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1962741443836442778, guid: 14b8b7b37cbe54a44a994f9d927bf213, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1962741444063654987, guid: 14b8b7b37cbe54a44a994f9d927bf213, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1962741444099505125, guid: 14b8b7b37cbe54a44a994f9d927bf213, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1962741444111849070, guid: 14b8b7b37cbe54a44a994f9d927bf213, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1962741444460096578, guid: 14b8b7b37cbe54a44a994f9d927bf213, type: 3}
       propertyPath: m_Name
       value: Static World Objects
@@ -2735,6 +2759,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1962741444460096581, guid: 14b8b7b37cbe54a44a994f9d927bf213, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1962741444867659683, guid: 14b8b7b37cbe54a44a994f9d927bf213, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1962741444990409278, guid: 14b8b7b37cbe54a44a994f9d927bf213, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
